@@ -1,10 +1,19 @@
 package com.mycompany.basespringmvc;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import com.mycompany.basespringmvc.models.ContactForm;
+import com.mycompany.basespringmvc.models.CustomerJdbcRepository;
 import com.mycompany.basespringmvc.models.SimpleBean;
 
 @Configuration
@@ -40,4 +49,12 @@ public class BaseSpringMvcConfiguration {
     	bean.setName("second");
         return bean;
     }
+    
+    /*
+    @Bean(name="customerJdbcDao")
+    public CustomerJdbcDao customerJdbcDao() {
+    	return new CustomerJdbcDao();
+    }
+    */
+    
 }

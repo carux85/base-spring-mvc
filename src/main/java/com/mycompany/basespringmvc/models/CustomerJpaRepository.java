@@ -1,0 +1,12 @@
+package com.mycompany.basespringmvc.models;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+public interface CustomerJpaRepository  extends CrudRepository<CustomerJpa, Long> {
+
+	  List<CustomerJpa> findByLastName(String lastName);
+
+	  CustomerJpa findById(long id);
+}

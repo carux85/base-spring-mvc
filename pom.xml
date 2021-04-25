@@ -33,33 +33,78 @@
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		
+		<!-- For test -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 		
+		<!-- For validation -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 		
+		<!-- For jsp tag library -->
 		<dependency>
 	        <groupId>javax.servlet</groupId>
 	        <artifactId>jstl</artifactId>
 	    </dependency>
 	
+		<!-- For response json conversion -->
 	  	<dependency>
 	        <groupId>org.apache.tomcat.embed</groupId>
 	        <artifactId>tomcat-embed-jasper</artifactId>
 	        <scope>provided</scope>
 	    </dependency>
 	    
+	    <!-- For inject annotation -->
 	    <dependency>
 		    <groupId>javax.inject</groupId>
 		    <artifactId>javax.inject</artifactId>
 		    <version>1</version>
 		</dependency>
+
+		<!-- For JDBC management -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- 
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <scope>runtime</scope>
+		</dependency>
+		 -->
+		<!-- end -->
+		
+		<!-- For JPA management -->
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <!--
+        <dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency> 
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <scope>runtime</scope>
+		</dependency>
+		 -->
+		 <!-- end -->
+		
 	</dependencies>
 
 	<build>
