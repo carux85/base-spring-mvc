@@ -10,10 +10,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.mycompany.basespringmvc.dao.CustomerHibernateDao;
+import com.mycompany.basespringmvc.dao.CustomerJdbcRepository;
+import com.mycompany.basespringmvc.models.CustomerHibernate;
 import com.mycompany.basespringmvc.models.CustomerJdbc;
-import com.mycompany.basespringmvc.models.CustomerJdbcRepository;
 import com.mycompany.basespringmvc.models.CustomerJpa;
-import com.mycompany.basespringmvc.models.CustomerJpaRepository;
+//import com.mycompany.basespringmvc.models.CustomerJpaRepository;
 
 @SpringBootApplication
 public class BaseSpringMvcApplication implements CommandLineRunner {
@@ -24,8 +26,11 @@ public class BaseSpringMvcApplication implements CommandLineRunner {
 	@Autowired
 	CustomerJdbcRepository customerJdbcRepository;
 	
+	//@Autowired
+	//CustomerJpaRepository customerJpaRepository;
+	
 	@Autowired
-	CustomerJpaRepository customerJpaRepository;
+	CustomerHibernateDao customerHibernateDao;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BaseSpringMvcApplication.class, args);
@@ -59,7 +64,7 @@ public class BaseSpringMvcApplication implements CommandLineRunner {
 	    customerJdbcRepository.findAll()
 	    .forEach(customer -> System.out.println(customer.toString()));
 	    
-	    
+	    /*
 	    System.out.println("----------- JPA Test -----------");
 	    // save a few customers
 	    customerJpaRepository.save(new CustomerJpa("Jack", "Bauer"));
@@ -84,6 +89,33 @@ public class BaseSpringMvcApplication implements CommandLineRunner {
 		customerJpaRepository.findByLastName("Bauer").forEach(bauer -> {
 			System.out.println(bauer.toString());
 		});
+		*/
 	    
+		
+	    System.out.println("----------- Hibernate Test -----------");
+	    // save a few customers
+	    customerHibernateDao.save(new CustomerHibernate("Jack", "Bauer"));
+	    customerHibernateDao.save(new CustomerHibernate("Chloe", "O'Brian"));
+	    customerHibernateDao.save(new CustomerHibernate("Kim", "Bauer"));
+	    customerHibernateDao.save(new CustomerHibernate("David", "Palmer"));
+	    customerHibernateDao.save(new CustomerHibernate("Michelle", "Dessler"));
+		
+		// fetch all customers
+		System.out.println("Customers found with findAll():");
+		  for (CustomerHibernate customer : customerHibernateDao.findAll()) {
+			  System.out.println(customer.toString());
+		  }
+		/*
+		// fetch an individual customer by ID
+		CustomerJpa customer = customerHibernateDao.findById(1L);
+		System.out.println("Customer found with findById(1L):");
+		System.out.println(customer.toString());
+		
+		// fetch customers by last name
+		System.out.println("Customer found with findByLastName('Bauer'):");
+		customerJpaRepository.findByLastName("Bauer").forEach(bauer -> {
+			System.out.println(bauer.toString());
+		});
+	    */
 	}
 }

@@ -1,9 +1,11 @@
-package com.mycompany.basespringmvc.models;
+package com.mycompany.basespringmvc.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
+
+import com.mycompany.basespringmvc.models.CustomerJdbc;
 
 public class CustomerJdbcRowMapper implements RowMapper<CustomerJdbc> {
 
