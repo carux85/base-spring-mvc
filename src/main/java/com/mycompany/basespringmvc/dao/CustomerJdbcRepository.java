@@ -20,7 +20,7 @@ public class CustomerJdbcRepository {
 	public int insert(CustomerJdbc customer) {
 
 	    return jdbcTemplate.update(
-	    	      "INSERT INTO customers(first_name, last_name) VALUES (?,?)", 
+	    	      "INSERT INTO customers_jdbc(first_name, last_name) VALUES (?,?)", 
 	    	      customer.getFirstName(),
 	    	      customer.getLastName()
     	      );
@@ -37,7 +37,7 @@ public class CustomerJdbcRepository {
 		}
 		
 		return jdbcTemplate.batchUpdate(
-					"INSERT INTO customers(first_name, last_name) VALUES (?,?)", 
+					"INSERT INTO customers_jdbc(first_name, last_name) VALUES (?,?)", 
 					paramsList
 				);
 	}
@@ -45,7 +45,7 @@ public class CustomerJdbcRepository {
 	public int update(CustomerJdbc customer) {
 		
 		return jdbcTemplate.update(
-					"UPDATE customers SET first_name = ?, last_name = ? WHERE id = ?", 
+					"UPDATE customers_jdbc SET first_name = ?, last_name = ? WHERE id = ?", 
 					customer.getFirstName(), 
 					customer.getLastName(),
 					customer.getId()
@@ -55,7 +55,7 @@ public class CustomerJdbcRepository {
 	public int delete(long id) {
 		
 		return jdbcTemplate.update(
-					"DELETE FROM customers WHERE id = ?", 
+					"DELETE FROM customers_jdbc WHERE id = ?", 
 					id
 				);
 	}
@@ -64,7 +64,7 @@ public class CustomerJdbcRepository {
 
 		
         return jdbcTemplate.queryForObject(
-	        		"SELECT * FROM customers WHERE id = ?", 
+	        		"SELECT * FROM customers_jdbc WHERE id = ?", 
 	        		new Object[]{id}, 
 	        		new int[]{Types.INTEGER},
 	        		new CustomerJdbcRowMapper()

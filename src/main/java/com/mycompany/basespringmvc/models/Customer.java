@@ -1,21 +1,24 @@
 package com.mycompany.basespringmvc.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "tbl_customers")
-public class CustomerHibernate {
+@Table(name = "customers")
+public class Customer {
 
    @Id
    @GeneratedValue
    @Column(name = "id")
-   private Long id;
+   private long id;
  
    @Column(name = "first_name")
    @Size(max = 20, min = 3, message = "{customer.first_name.invalid}")
@@ -27,11 +30,16 @@ public class CustomerHibernate {
    @NotEmpty(message="Please Enter your last name")
    private String lastName;
    
-   public CustomerHibernate() {}
+   @OneToOne(cascade = CascadeType.ALL)
+   @JoinColumn(name = "city_id") 
+   private City city;
    
-   public CustomerHibernate(String firstName, String lastName) {
+   public Customer() {}
+   
+   public Customer(String firstName, String lastName, City city) {
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.city = city;
    }
    
    public long getId() {
@@ -57,9 +65,17 @@ public class CustomerHibernate {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
+    public City getCity() {
+		return city;
+	}
+
+	public void setCity(City city) {
+		this.city = city;
+	}
 
 	@Override
 	public String toString() {
-		return String.format("Customer[id=%d, firstName='%s', lastName='%s']", id, firstName, lastName);
+		return String.format("Customer[id=%d, firstName='%s', lastName='%s', city=%s]", id, firstName, lastName, city.toString());
 	}
 }

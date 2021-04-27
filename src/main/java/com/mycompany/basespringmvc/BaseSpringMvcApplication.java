@@ -10,9 +10,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.mycompany.basespringmvc.dao.CustomerHibernateDao;
+import com.mycompany.basespringmvc.dao.CityDao;
+import com.mycompany.basespringmvc.dao.CustomerDao;
 import com.mycompany.basespringmvc.dao.CustomerJdbcRepository;
-import com.mycompany.basespringmvc.models.CustomerHibernate;
+import com.mycompany.basespringmvc.models.City;
+import com.mycompany.basespringmvc.models.Customer;
 import com.mycompany.basespringmvc.models.CustomerJdbc;
 import com.mycompany.basespringmvc.models.CustomerJpa;
 //import com.mycompany.basespringmvc.models.CustomerJpaRepository;
@@ -30,7 +32,10 @@ public class BaseSpringMvcApplication implements CommandLineRunner {
 	//CustomerJpaRepository customerJpaRepository;
 	
 	@Autowired
-	CustomerHibernateDao customerHibernateDao;
+	CustomerDao customerDao;
+	
+	@Autowired
+	CityDao cityDao;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BaseSpringMvcApplication.class, args);
@@ -40,15 +45,12 @@ public class BaseSpringMvcApplication implements CommandLineRunner {
 	public void run(String... strings) throws Exception {
 
 		System.out.println("----------- JDBC Test -----------");
-	    jdbcTemplate.execute("DROP TABLE customers IF EXISTS");
-	    jdbcTemplate.execute("CREATE TABLE customers(id SERIAL, first_name VARCHAR(255), last_name VARCHAR(255))");
+	    jdbcTemplate.execute("DROP TABLE customers_jdbc IF EXISTS"); //For H2
+	    //jdbcTemplate.execute("DROP TABLE IF EXISTS customers_jdbc"); //For MySql
+	    jdbcTemplate.execute("CREATE TABLE customers_jdbc(id SERIAL, first_name VARCHAR(255), last_name VARCHAR(255))");
 	    
-	    CustomerJdbc c1= new CustomerJdbc("John", "Woo");
-	    CustomerJdbc c2= new CustomerJdbc("Jeff", "Dean");
-	    CustomerJdbc c3= new CustomerJdbc("John", "Bloch");
-	    
-	    customerJdbcRepository.insert(c1);
-	    customerJdbcRepository.insertAll(c2, c3);
+	    customerJdbcRepository.insert(new CustomerJdbc("John", "Woo"));
+	    customerJdbcRepository.insertAll(new CustomerJdbc("Jeff", "Dean"), new CustomerJdbc("John", "Bloch"));
 	    
 	    System.out.println("findById \"1\" result:");
 	    System.out.println(customerJdbcRepository.findById(1).toString());
@@ -92,30 +94,36 @@ public class BaseSpringMvcApplication implements CommandLineRunner {
 		*/
 	    
 		
-	    System.out.println("----------- Hibernate Test -----------");
+	    System.out.println("\n----------- Hibernate Test -----------");
+	    
+	    City turin = new City("Turin", "Italy");
+	    City milan = new City("Milan", "Italy");
+	    
+	    System.out.println(Customer.class.getSimpleName());
 	    // save a few customers
-	    customerHibernateDao.save(new CustomerHibernate("Jack", "Bauer"));
-	    customerHibernateDao.save(new CustomerHibernate("Chloe", "O'Brian"));
-	    customerHibernateDao.save(new CustomerHibernate("Kim", "Bauer"));
-	    customerHibernateDao.save(new CustomerHibernate("David", "Palmer"));
-	    customerHibernateDao.save(new CustomerHibernate("Michelle", "Dessler"));
+	    customerDao.save(new Customer("Jack", "Bauer", turin));
+	    customerDao.save(new Customer("Chloe", "O'Brian", turin));
+	    customerDao.save(new Customer("Kim", "Bauer", milan));
+	    customerDao.save(new Customer("David", "Palmer", milan));
+	    customerDao.save(new Customer("Michelle", "Dessler", turin));
 		
 		// fetch all customers
-		System.out.println("Customers found with findAll():");
-		  for (CustomerHibernate customer : customerHibernateDao.findAll()) {
-			  System.out.println(customer.toString());
-		  }
-		/*
-		// fetch an individual customer by ID
-		CustomerJpa customer = customerHibernateDao.findById(1L);
-		System.out.println("Customer found with findById(1L):");
-		System.out.println(customer.toString());
-		
+		System.out.println("\nCustomers found with findAll():");
+		for (Customer customer : customerDao.findAll()) {
+			System.out.println(customer.toString());
+		}
+
 		// fetch customers by last name
-		System.out.println("Customer found with findByLastName('Bauer'):");
-		customerJpaRepository.findByLastName("Bauer").forEach(bauer -> {
+		System.out.println("\nCustomer found with findByLastName('Bauer'):");
+		customerDao.findByLastName("Bauer").forEach(bauer -> {
 			System.out.println(bauer.toString());
 		});
-	    */
+		
+		// fetch customers by city name
+		System.out.println("\nCustomer found with findByCityName('Turin'):");
+		customerDao.findByCityName("Turin").forEach(cus -> {
+			System.out.println(cus.toString());
+		});
+		
 	}
 }
