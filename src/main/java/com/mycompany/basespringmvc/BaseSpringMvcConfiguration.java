@@ -32,6 +32,7 @@ public class BaseSpringMvcConfiguration {
     @Bean(name="defaultContactForm")
     public ContactForm defaultContactForm() {
     	ContactForm form = new ContactForm();
+    	form.setSubject("Info request");
         return form;
     }
     

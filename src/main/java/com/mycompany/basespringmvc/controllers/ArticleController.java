@@ -25,7 +25,7 @@ public class ArticleController {
 		indesit.setName("Indesit");
 		Brand philips = new Brand();
 		philips.setId("2");
-		philips.setName("dishwasher");
+		philips.setName("Philips");
 		ArrayList<Brand> brands= new ArrayList<Brand>(); 
 		brands.add(indesit);
 		brands.add(philips);
@@ -45,9 +45,11 @@ public class ArticleController {
 		Article art2 = new Article();
 		art2.setId("2");
 		art2.setName("dishwasher");
+		
 		ArrayList<Article> indesit= new ArrayList<Article>(); 
 		indesit.add(art1);
 		indesit.add(art2);
+		
 		Article art3 = new Article();
 		art3.setId("3");
 		art3.setName("television");

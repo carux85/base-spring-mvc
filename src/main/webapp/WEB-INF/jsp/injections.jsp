@@ -22,6 +22,8 @@
 	<div>autowiredByType:&nbsp;${autowiredByType.name}</div>
 	<div>autowiredByName1:&nbsp;${autowiredByName1.name}</div>
 	<div>autowiredByName2:&nbsp;${autowiredByName2.name}</div>
+	<br/>
+	<div>simpleComponent:&nbsp;${simpleComponent.name}</div>
 	
 </body>
 </html>

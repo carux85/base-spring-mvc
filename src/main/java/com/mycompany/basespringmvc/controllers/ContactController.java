@@ -31,7 +31,7 @@ public class ContactController {
 	}
 	
 	@PostMapping
-	public String sendEmail(@Valid @ModelAttribute("contactform")ContactForm contactform, BindingResult result, Model model) {
+	public String sendEmail(@Valid @ModelAttribute("contactform") ContactForm contactform, BindingResult result, Model model) {
 		
 		if (result.hasErrors()) {			
 			model.addAttribute("error", "Uncorrect values!");

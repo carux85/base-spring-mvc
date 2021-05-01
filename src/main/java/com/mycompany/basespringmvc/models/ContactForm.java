@@ -1,6 +1,7 @@
 package com.mycompany.basespringmvc.models;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -15,7 +16,6 @@ public class ContactForm {
 	@NotEmpty
 	@Email
 	private String email;
-	
 	@PhoneNumber
 	private String phone;
 	@NotEmpty

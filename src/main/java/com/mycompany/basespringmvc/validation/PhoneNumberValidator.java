@@ -6,7 +6,7 @@ import javax.validation.ConstraintValidatorContext;
 public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, String> {
 
     @Override
-    public void initialize(PhoneNumber phoneNumer) {
+    public void initialize(PhoneNumber phoneNumber) {
     }
 
     @Override

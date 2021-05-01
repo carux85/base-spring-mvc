@@ -84,5 +84,13 @@ public class CustomerDaoImpl implements CustomerDao{
 	public void delete(Customer customer) {
     	sessionFactory.getCurrentSession().delete(customer);
 	}
+    
+    @Transactional
+	@Override
+	public void deleteById(long id) {
+    	Customer cus = new Customer();
+    	cus.setId(id);
+    	sessionFactory.getCurrentSession().delete(cus);
+	}
    
 }
