@@ -1,5 +1,7 @@
 .settings
 target
+logs
 *.class
 *.war
 *.jar
+*.log
