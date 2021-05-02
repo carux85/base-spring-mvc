@@ -1,9 +1,31 @@
 package com.mycompany.basespringmvc.models;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="articles")
 public class Article {
+	
+	@Id
 	private String id;
 	private String name;
-	private String description;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "brand_id")
+	private Brand brand;
+	
+	public Article() {}
+	
+	public Article(String id, String name,  Brand brand) {
+		this.id = id;
+		this.name = name;
+		this.brand = brand;
+	}
 	
 	public String getId() {
 		return id;
@@ -17,10 +39,12 @@ public class Article {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDescription() {
-		return description;
+
+	public Brand getBrand() {
+		return brand;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+
+	public void setBrand(Brand brand) {
+		this.brand = brand;
 	}
 }

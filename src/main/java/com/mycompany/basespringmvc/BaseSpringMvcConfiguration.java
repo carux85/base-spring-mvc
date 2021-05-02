@@ -20,6 +20,8 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.mycompany.basespringmvc.dao.CustomerJdbcRepository;
+import com.mycompany.basespringmvc.models.Article;
+import com.mycompany.basespringmvc.models.Brand;
 import com.mycompany.basespringmvc.models.City;
 import com.mycompany.basespringmvc.models.ContactForm;
 import com.mycompany.basespringmvc.models.Customer;
@@ -79,7 +81,7 @@ public class BaseSpringMvcConfiguration {
         props.put("hibernate.dialect",env.getProperty("hibernate.dialect"));
         props.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         factoryBean.setHibernateProperties(props);
-        factoryBean.setAnnotatedClasses(Customer.class, City.class);
+        factoryBean.setAnnotatedClasses(Customer.class, City.class, Article.class, Brand.class);
         return factoryBean;
     }
     

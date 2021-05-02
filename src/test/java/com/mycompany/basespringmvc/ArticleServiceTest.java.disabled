@@ -1,0 +1,48 @@
+package com.mycompany.basespringmvc;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+//import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.mycompany.basespringmvc.controllers.ArticleController;
+import com.mycompany.basespringmvc.dao.ArticleDao;
+import com.mycompany.basespringmvc.models.Brand;
+import com.mycompany.basespringmvc.services.ArticleService;
+import static org.hamcrest.MatcherAssert.assertThat; 
+import static org.hamcrest.Matchers.*;
+
+@WebMvcTest
+@TestPropertySource(locations = "classpath:application-test.properties")
+@Import(BaseSpringMvcApplicationTestConfig.class)
+public class ArticleServiceTest {
+
+	@Autowired
+	private ArticleService articleService;
+	
+	@MockBean
+    private ArticleDao articleDao;
+	
+	
+	@Test
+	public void test_getAllBrands() {
+		ArrayList<Brand> mokeBrands = new ArrayList<Brand>();
+	    mokeBrands.add(new Brand("100", "Sony"));
+	    mokeBrands.add(new Brand("200", "LG"));
+	    
+	    Mockito.when(articleDao.findAllBrands()).thenReturn(mokeBrands);
+	    
+	    List<Brand> brands = articleService.getAllBrands();
+	    assertThat(brands, hasSize(mokeBrands.size()));
+	    assertThat(brands.get(0), equalTo(mokeBrands.get(0)));
+	    assertThat(brands, equalTo(mokeBrands));
+	}
+}

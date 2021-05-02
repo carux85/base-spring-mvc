@@ -1,5 +1,6 @@
 package com.mycompany.basespringmvc;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,25 +9,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.mycompany.basespringmvc.dao.ArticleDao;
 import com.mycompany.basespringmvc.dao.CityDao;
 import com.mycompany.basespringmvc.dao.CustomerDao;
 import com.mycompany.basespringmvc.dao.CustomerJdbcRepository;
+import com.mycompany.basespringmvc.models.Article;
+import com.mycompany.basespringmvc.models.Brand;
 import com.mycompany.basespringmvc.models.City;
 import com.mycompany.basespringmvc.models.Customer;
 import com.mycompany.basespringmvc.models.CustomerJdbc;
 import com.mycompany.basespringmvc.models.CustomerJpa;
 //import com.mycompany.basespringmvc.models.CustomerJpaRepository;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class)
 public class BaseSpringMvcApplication implements CommandLineRunner {
 	
-	@Autowired
-	JdbcTemplate jdbcTemplate;
+	//@Autowired
+	//JdbcTemplate jdbcTemplate;
 	
-	@Autowired
-	CustomerJdbcRepository customerJdbcRepository;
+	//@Autowired
+	//CustomerJdbcRepository customerJdbcRepository;
 	
 	//@Autowired
 	//CustomerJpaRepository customerJpaRepository;
@@ -35,15 +40,15 @@ public class BaseSpringMvcApplication implements CommandLineRunner {
 	CustomerDao customerDao;
 	
 	@Autowired
-	CityDao cityDao;
-
+	ArticleDao articleDao;
+    
 	public static void main(String[] args) {
 		SpringApplication.run(BaseSpringMvcApplication.class, args);
 	}
 
 	@Override
 	public void run(String... strings) throws Exception {
-
+		/*
 		System.out.println("----------- JDBC Test -----------");
 	    jdbcTemplate.execute("DROP TABLE customers_jdbc IF EXISTS"); //For H2
 	    //jdbcTemplate.execute("DROP TABLE IF EXISTS customers_jdbc"); //For MySql
@@ -65,7 +70,7 @@ public class BaseSpringMvcApplication implements CommandLineRunner {
 	    System.out.println("findByAll result:");
 	    customerJdbcRepository.findAll()
 	    .forEach(customer -> System.out.println(customer.toString()));
-	    
+	    */
 	    /*
 	    System.out.println("----------- JPA Test -----------");
 	    // save a few customers
@@ -124,6 +129,16 @@ public class BaseSpringMvcApplication implements CommandLineRunner {
 		customerDao.findByCityName("Turin").forEach(cus -> {
 			System.out.println(cus.toString());
 		});
+		
+		Brand indesit = new Brand("1", "Indesit");
+		Brand philips = new Brand("2", "Philips");
+		articleDao.saveBrand(indesit);
+		articleDao.saveBrand(philips);
+		
+		articleDao.saveArticle(new Article("1","washing machine", indesit));
+		articleDao.saveArticle(new Article("2","dishwasher", indesit));
+		articleDao.saveArticle(new Article("3","television", philips));
+		articleDao.saveArticle(new Article("4","radio", philips));
 		
 	}
 }

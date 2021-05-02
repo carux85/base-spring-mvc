@@ -12,25 +12,41 @@ import static org.hamcrest.Matchers.is;
 
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.ui.Model;
 
+import com.mycompany.basespringmvc.dao.ArticleDao;
+import com.mycompany.basespringmvc.models.Article;
+import com.mycompany.basespringmvc.models.Brand;
 import com.mycompany.basespringmvc.models.ContactForm;
+import com.mycompany.basespringmvc.services.ArticleService;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = BaseSpringMvcApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-test.properties") 
+//@Import(BaseSpringMvcApplicationTestConfig.class)
 class BaseSpringMvcApplicationTests {
 	
 	@Autowired
     private MockMvc mvc;
+	
+	@MockBean
+	private ArticleService articleService;
+	
+	@MockBean
+	private ArticleDao articleDao;
 	
 	@Test
 	void contextLoads(){
@@ -100,14 +116,13 @@ class BaseSpringMvcApplicationTests {
 	void controller_contact_post() throws Exception{
 		
 		this.mvc.perform(
-			post("/contact")
-			.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-			.param("name", "myname")
-			.param("surname", "mysurname")
-			.param("email", "a.b@myemail.it")
-			.param("subject", "mysubject")
-			.param("message", "mymessage")
-		)
+				post("/contact")
+					.param("name", "myname")
+					.param("surname", "mysurname")
+					.param("email", "a.b@myemail.it")
+					.param("subject", "mysubject")
+					.param("message", "mymessage")
+					)
 		.andExpect(status().isOk())
         .andExpect(view().name("confirmContact")) //jsp name
         .andExpect(forwardedUrl("/WEB-INF/jsp/confirmContact.jsp"))
@@ -119,5 +134,35 @@ class BaseSpringMvcApplicationTests {
 		.andExpect(model().attribute("contactform", hasProperty("message", is("mymessage"))))
 		.andExpect(model().attribute("name", is("myname")));
     }
+	
+	@Test
+	public void restcontroller_brands() throws Exception {
+		
+		ArrayList<Brand> mokeBrands = new ArrayList<Brand>();
+	    mokeBrands.add(new Brand("100", "Sony"));
+	    mokeBrands.add(new Brand("200", "LG"));
+	    
+	    Mockito.when(articleService.getAllBrands()).thenReturn(mokeBrands);
+	    
+	    this.mvc.perform(get("/brands"))
+		.andExpect(status().isOk())
+		.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+		.andExpect(content().string("[{\"id\":\"100\",\"name\":\"Sony\"},{\"id\":\"200\",\"name\":\"LG\"}]"));
 
+	}
+	
+	/*
+	@Test
+	public void articleService_getArticle() throws Exception {
+		
+		Article mokeArticle = new Article("10", "Smartphone", new Brand("100", "Sony"));
+	    Mockito.when(articleDao.findArticleById(mokeArticle.getId())).thenReturn(mokeArticle);
+	    
+	    Article found = articleService.getArticle(mokeArticle.getId());
+	    
+	    assertThat(found.getName(), equalTo(mokeArticle.getName()));
+	    assertThat(found.getBrand().getName(), equalTo(mokeArticle.getBrand().getName()));
+
+	}
+    */
 }
