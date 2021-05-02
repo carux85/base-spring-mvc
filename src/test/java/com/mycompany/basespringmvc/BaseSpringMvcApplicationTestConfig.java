@@ -31,5 +31,33 @@ public class BaseSpringMvcApplicationTestConfig {
 		return new ArticleServiceImpl();
 	}
 	
+	@Autowired
+    private Environment env;
+    
+    
+    @Autowired
+    private DataSource dataSource;
+    
+    @Bean
+    public LocalSessionFactoryBean getSessionFactory() {
+    	
+        LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
+        factoryBean.setDataSource(dataSource);
+
+        Properties props=new Properties();
+        props.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+        props.put("hibernate.dialect",env.getProperty("hibernate.dialect"));
+        props.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        factoryBean.setHibernateProperties(props);
+        factoryBean.setAnnotatedClasses(Customer.class, City.class, Article.class, Brand.class);
+        return factoryBean;
+    }
+    
+    @Bean
+    public HibernateTransactionManager getTransactionManager() {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(getSessionFactory().getObject());
+        return transactionManager;
+    }
 	
 }

@@ -35,13 +35,13 @@ public class BaseSpringMvcApplication implements CommandLineRunner {
 	
 	//@Autowired
 	//CustomerJpaRepository customerJpaRepository;
-	
+	/*
 	@Autowired
 	CustomerDao customerDao;
 	
 	@Autowired
 	ArticleDao articleDao;
-    
+    */
 	public static void main(String[] args) {
 		SpringApplication.run(BaseSpringMvcApplication.class, args);
 	}
@@ -98,7 +98,7 @@ public class BaseSpringMvcApplication implements CommandLineRunner {
 		});
 		*/
 	    
-		
+		/*
 	    System.out.println("\n----------- Hibernate Test -----------");
 	    
 	    City turin = new City("Turin", "Italy");
@@ -139,6 +139,6 @@ public class BaseSpringMvcApplication implements CommandLineRunner {
 		articleDao.saveArticle(new Article("2","dishwasher", indesit));
 		articleDao.saveArticle(new Article("3","television", philips));
 		articleDao.saveArticle(new Article("4","radio", philips));
-		
+		*/
 	}
 }
