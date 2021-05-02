@@ -13,7 +13,7 @@ public class ContactForm {
 	private String name;
 	@NotEmpty
 	private String surname;
-	@NotEmpty
+	@NotEmpty(message = "{email.notempty}")
 	@Email
 	private String email;
 	@PhoneNumber

@@ -3,6 +3,7 @@ package com.mycompany.basespringmvc.controllers;
 import org.apache.logging.log4j.LogManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("logging")
 public class LoggingController {
 
-    private final static Logger logger = LoggerFactory.getLogger(LoggingController.class);
+    //private final static Logger logger = LoggerFactory.getLogger(LoggingController.class);
+	@Autowired
+	Logger logger;
 
     @GetMapping
     public String index() {

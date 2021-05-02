@@ -1,25 +1,30 @@
 package com.mycompany.basespringmvc;
 
+import java.util.Locale;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-import com.mycompany.basespringmvc.dao.CustomerJdbcRepository;
 import com.mycompany.basespringmvc.models.Article;
 import com.mycompany.basespringmvc.models.Brand;
 import com.mycompany.basespringmvc.models.City;
@@ -29,7 +34,7 @@ import com.mycompany.basespringmvc.models.SimpleBean;
 
 @Configuration
 @EnableTransactionManagement
-public class BaseSpringMvcConfiguration {
+public class BaseSpringMvcConfiguration implements WebMvcConfigurer{
 
     @Bean(name="defaultContactForm")
     public ContactForm defaultContactForm() {
@@ -63,6 +68,17 @@ public class BaseSpringMvcConfiguration {
         return bean;
     }
     
+    @Bean
+    @Scope("prototype")
+    public Logger logger(final InjectionPoint ip) {
+    	
+       if(ip.getField()!=null)
+    	   return LoggerFactory.getLogger(ip.getField().getDeclaringClass());
+       
+       return LoggerFactory.getLogger("");
+       
+    }
+    
     @Autowired
     private Environment env;
     
@@ -90,5 +106,42 @@ public class BaseSpringMvcConfiguration {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
         transactionManager.setSessionFactory(getSessionFactory().getObject());
         return transactionManager;
+    }
+    
+    
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver slr = new SessionLocaleResolver();
+        slr.setDefaultLocale(Locale.US);
+        return slr;
+    }
+    
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        lci.setParamName("lang");
+        return lci;
+    }
+    
+    @Bean
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource
+          = new ReloadableResourceBundleMessageSource();
+        
+        messageSource.setBasename("classpath:messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+    }
+    
+    @Bean
+    public LocalValidatorFactoryBean getValidator() {
+        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        bean.setValidationMessageSource(messageSource());
+        return bean;
+    }
+    
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
     }
 }

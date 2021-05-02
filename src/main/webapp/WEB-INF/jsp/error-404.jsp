@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Error</title>
+<title>Page not found</title>
 </head>
 <body>
-<h3>Operation error</h3>
+	<h1>Page not found!</h1>
 </body>
 </html>
